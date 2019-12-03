@@ -1,0 +1,13 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}eBook APP Detail page{% endblock %}
+
+{% block myhdg %}Hello {{ request.user.username }} {% endblock %}
+
+{% block body_block %}
+    <h2>{{ book.title }}</h2>
+    <p>Price: {{ book.price }}</p>
+    <p>Publisher: {{ book.publisher }}</p>
+{#    <p><a href="{% url 'myapp:index' %}">Go to index page</a></p>#}
+{#    <p><a href="{% url 'myapp:about' %}">Go to about page</a></p>#}
+{% endblock %}

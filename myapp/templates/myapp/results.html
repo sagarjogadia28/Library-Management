@@ -1,0 +1,22 @@
+{% extends 'myapp/base.html' %}
+
+{% block myhdg %}Hello {{ name }}{% endblock %}
+
+{% block body_block %}
+    {% if booklist %}
+        {% if category %}
+            <h2>List of Books of category: {{ category }}</h2>
+        {% else %}
+            <h2>List of Books </h2>
+        {% endif %}
+        <ol>
+            {% for book in booklist %}
+                <li>{{ book.title }}</li>
+            {% endfor %}
+        </ol>
+
+    {% else %}
+        <strong>There are no available books!</strong>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'myapp/base.html' %}
+
+{% block myhdg %}Hello {{ name }}{% endblock %}
+
+{% block body_block %}
+    {% if books %}
+        <h2>List of Books </h2>
+        <ol>
+            {% for book in books %}
+                <li>{{ book.title }}</li>
+            {% endfor %}
+        </ol>
+
+    {% else %}
+        <strong>There are no available books!</strong>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,12 @@
+.hbar1 {
+    display: inline;
+    margin: 15px;
+}
+
+h1{
+    background-color: rebeccapurple;
+    color: white;
+    padding: 2%;
+    font-size: 16pt;
+    align-content: center;
+}

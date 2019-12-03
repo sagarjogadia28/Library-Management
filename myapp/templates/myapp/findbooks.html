@@ -1,0 +1,15 @@
+{% extends 'myapp/base.html' %}
+
+{% block myhdg %}Hello {{ request.user.username }} {% endblock %}
+
+{% block body_block %}
+    <form action="{% url 'myapp:findbooks' %}" method="post">
+        {#        CSRF token missing or incorrect.#}
+        {#        The csrf_token template tag provides an easy-to-use protection against Cross Site Request Forgeries#}
+        {% csrf_token %}
+        {#        Return this form rendered as HTML <p>s#}
+        {{ form.as_p }}
+        <input type="submit" name="submit1" value="Find Books"/>
+    </form>
+
+{% endblock %}
