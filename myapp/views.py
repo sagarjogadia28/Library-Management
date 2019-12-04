@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
+from django.views import View
 import random
 from datetime import datetime
 
@@ -17,6 +18,19 @@ def index(request):
         last_login = request.session.get('last_login')
     book_list = Book.objects.all().order_by('id')[:10]
     return render(request, 'myapp/index.html', {'booklist': book_list, 'last_login': last_login})
+
+
+class IndexView(View):
+    template_name = 'myapp/index.html'
+    last_login_cookie = 'last_login'
+
+    def get(self, request):
+        last_login = ''
+        if self.last_login_cookie in request.session.keys():
+            last_login = request.session.get(self.last_login_cookie)
+
+        book_list = Book.objects.all().order_by('id')[:10]
+        return render(request, self.template_name, {'booklist': book_list, 'last_login': last_login})
 
 
 def about(request):
@@ -32,6 +46,14 @@ def about(request):
 def detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     return render(request, 'myapp/detail.html', {'book': book})
+
+
+class DetailView(View):
+    template_name = 'myapp/detail.html'
+
+    def get(self, request, book_id):
+        book = get_object_or_404(Book, id=book_id)
+        return render(request, self.template_name, {'book': book})
 
 
 def findbooks(request):

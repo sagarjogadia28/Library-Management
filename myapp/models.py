@@ -51,6 +51,7 @@ class Member(User):
     last_renewal = models.DateField(default=timezone.now)
     auto_renew = models.BooleanField(default=True)
     borrowed_books = models.ManyToManyField(Book, blank=True)
+    image = models.ImageField(blank=True, upload_to='profile_image')
 
     def __str__(self):
         return self.username
