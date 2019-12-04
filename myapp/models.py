@@ -2,6 +2,7 @@ from django.db import models
 import datetime
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -26,7 +27,8 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     category = models.CharField(max_length=1, choices=CATEGORY_CHOICES, default='S')
     num_pages = models.PositiveIntegerField(default=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2,
+                                validators=[MinValueValidator(0), MaxValueValidator(1000)])
     publisher = models.ForeignKey(Publisher, related_name='books', on_delete=models.CASCADE)
     description = models.TextField(blank=True)
     num_reviews = models.PositiveIntegerField(default=0)
@@ -52,6 +54,12 @@ class Member(User):
 
     def __str__(self):
         return self.username
+
+    def books_title(self):
+        title = ""
+        for book in self.borrowed_books.all():
+            title = title + book.title + ", "
+        return title[:-1]
 
 
 class Order(models.Model):

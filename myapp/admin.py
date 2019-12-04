@@ -24,9 +24,13 @@ class PublisherAdmin(admin.ModelAdmin):
     list_display = ('name', 'website', 'city')
 
 
+class MemberAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'status', 'books_title')
+
+
 # Register your models here.
 admin.site.register(Publisher, PublisherAdmin)
 admin.site.register(Book, BookAdmin)
-admin.site.register(Member)
+admin.site.register(Member, MemberAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Review)

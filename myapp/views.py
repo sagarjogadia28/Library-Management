@@ -76,18 +76,25 @@ def place_order(request):
 
 
 def review(request):
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save()
-            book = review.book
-            book.num_reviews += 1
-            book.save()
-            review.save()
-            return HttpResponseRedirect('/myapp')
+    if request.user.is_authenticated:
+        member = get_object_or_404(Member, pk=request.user.pk)
+        if member.status == 1 or member.status == 2:
+            if request.method == 'POST':
+                form = ReviewForm(request.POST)
+                if form.is_valid():
+                    review = form.save()
+                    book = review.book
+                    book.num_reviews += 1
+                    book.save()
+                    review.save()
+                    return HttpResponseRedirect('/myapp')
+            else:
+                form = ReviewForm()
+            return render(request, 'myapp/review.html', {'form': form})
+        else:
+            return HttpResponse('You are not eligible to view this page')
     else:
-        form = ReviewForm()
-    return render(request, 'myapp/review.html', {'form': form})
+        return HttpResponse('You are not eligible to view this page')
 
 
 def user_login(request):
