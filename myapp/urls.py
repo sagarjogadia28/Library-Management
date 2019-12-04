@@ -14,4 +14,5 @@ urlpatterns = [
     path(r'logout/', views.user_logout, name='logout'),
     path(r'check/<int:book_id>/', views.chk_reviews, name='check_reviews'),
     path(r'register/', views.register, name='register'),
+    path(r'orders/', views.my_orders, name='orders'),
 ]

@@ -172,3 +172,23 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'myapp/register.html', {'form': form})
+
+
+def my_orders(request):
+    if not request.user.is_anonymous and request.user.is_authenticated:
+        try:
+            logged_in_user = Member.objects.get(pk=request.user.pk)
+            orders = Order.objects.filter(member=logged_in_user)
+
+            book_list = []
+            for order in orders:
+                books = order.books.all()
+                book_title = ''
+                for book in books:
+                    book_title = book_title + book.title + ', '
+                book_list.append(book_title[:-2])
+
+            return render(request, 'myapp/myorders.html', {'orders': orders, 'book_list': book_list})
+        except Member.DoesNotExist:
+            return HttpResponse('There are no available orders!')
+    return HttpResponse('You are not a registered member!')
