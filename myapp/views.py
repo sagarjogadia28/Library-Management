@@ -97,33 +97,32 @@ def place_order(request):
         return render(request, 'myapp/placeorder.html', {'form': form})
 
 
+@login_required(login_url='/myapp/login/')
 def review(request):
-    if request.user.is_authenticated:
-        try:
-            member = Member.objects.get(pk=request.user.pk)
-            if member.status == 1 or member.status == 2:
-                if request.method == 'POST':
-                    form = ReviewForm(request.POST)
-                    if form.is_valid():
-                        review = form.save()
-                        book = review.book
-                        book.num_reviews += 1
-                        book.save()
-                        review.save()
-                        return HttpResponseRedirect('/myapp')
-                else:
-                    form = ReviewForm()
-                return render(request, 'myapp/review.html', {'form': form})
+    try:
+        member = Member.objects.get(pk=request.user.pk)
+        if member.status == 1 or member.status == 2:
+            if request.method == 'POST':
+                form = ReviewForm(request.POST)
+                if form.is_valid():
+                    review = form.save()
+                    book = review.book
+                    book.num_reviews += 1
+                    book.save()
+                    review.save()
+                    return HttpResponseRedirect('/myapp')
             else:
-                return render(request, 'myapp/invalid.html', {'message': 'You are not eligible to view this page'})
-        except Member.DoesNotExist:
+                form = ReviewForm()
+            return render(request, 'myapp/review.html', {'form': form})
+        else:
             return render(request, 'myapp/invalid.html', {'message': 'You are not eligible to view this page'})
-    else:
+    except Member.DoesNotExist:
         return render(request, 'myapp/invalid.html', {'message': 'You are not eligible to view this page'})
 
 
 def user_login(request):
     if request.method == 'POST':
+        valuenext = request.POST.get('next')
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -132,7 +131,10 @@ def user_login(request):
                 login(request, user)
                 request.session['last_login'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 request.session.set_expiry(3600)
-                return HttpResponseRedirect(reverse('myapp:index'))
+                if valuenext == '':
+                    return HttpResponseRedirect(reverse('myapp:index'))
+                else:
+                    return HttpResponseRedirect(valuenext)
             else:
                 return render(request, 'myapp/invalid.html', {'message': 'Your account is disabled.'})
         else:
@@ -141,16 +143,14 @@ def user_login(request):
         return render(request, 'myapp/login.html')
 
 
-@login_required
+@login_required(login_url='/myapp/login/')
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('myapp:index'))
 
 
+@login_required(login_url='/myapp/login/')
 def chk_reviews(request, book_id):
-    # Not logged-in
-    if request.user.is_anonymous:
-        return HttpResponseRedirect('/myapp/login')
     if request.user.is_authenticated:
         selected_book = get_object_or_404(Book, pk=book_id)
         if selected_book.num_reviews == 0:
@@ -181,23 +181,21 @@ def register(request):
     return render(request, 'myapp/register.html', {'form': form})
 
 
+@login_required(login_url='/myapp/login/')
 def my_orders(request):
-    if not request.user.is_anonymous and request.user.is_authenticated:
-        try:
-            logged_in_user = Member.objects.get(pk=request.user.pk)
-            orders = Order.objects.filter(member=logged_in_user)
+    try:
+        logged_in_user = Member.objects.get(pk=request.user.pk)
+        orders = Order.objects.filter(member=logged_in_user)
 
-            book_list = []
-            for order in orders:
-                books = order.books.all()
-                book_title = ''
-                for book in books:
-                    book_title = book_title + book.title + ', '
-                book_list.append(book_title[:-2])
+        book_list = []
+        for order in orders:
+            books = order.books.all()
+            book_title = ''
+            for book in books:
+                book_title = book_title + book.title + ', '
+            book_list.append(book_title[:-2])
+        new_list = zip(orders, book_list)
 
-            new_list = zip(orders, book_list)
-            return render(request, 'myapp/myorders.html',
-                          {'orders': orders, 'book_list': book_list, 'new_list': new_list})
-        except Member.DoesNotExist:
-            return render(request, 'myapp/invalid.html', {'message': 'There are no available orders!'})
-    return render(request, 'myapp/invalid.html', {'message': 'You are not a registered member!'})
+        return render(request, 'myapp/myorders.html', {'orders': orders, 'book_list': book_list, 'new_list': new_list})
+    except Member.DoesNotExist:
+        return render(request, 'myapp/invalid.html', {'message': 'There are no available orders!'})

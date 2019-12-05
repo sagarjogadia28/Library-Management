@@ -16,6 +16,7 @@
                required>
 
         <p></p>
+        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
         <input type="submit" name="submit1" class="btn btn-lg btn-primary btn-block" value="Submit"/>
     </form>
 {% endblock %}
