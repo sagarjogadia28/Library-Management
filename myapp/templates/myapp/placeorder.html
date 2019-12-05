@@ -1,12 +1,17 @@
 {% extends 'myapp/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Place order{% endblock %}
 
 {% block myhdg %}Hello {{ request.user.username }} {% endblock %}
 
 {% block body_block %}
-    <form action="{% url 'myapp:place_order' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" name="submit1" value="Purchase/Borrow Books"/>
-    </form>
+    <div class="register-form">
+        <form action="{% url 'myapp:place_order' %}" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" name="submit1" class="btn btn-success register-submit" value="Submit"/>
+        </form>
+    </div>
 
 {% endblock %}

@@ -1,19 +1,21 @@
 {% extends 'myapp/base.html' %}
 
+{% block title %}Login{% endblock %}
+
 {% block body_block %}
-    <form action="{% url 'myapp:login' %}" method="post">
-    {% csrf_token %}
-        <p>
-            <label for="id_username">Username: </label>
-            <input type="text" name="username" id="id_username">
-        </p>
+    <form action="{% url 'myapp:login' %}" method="post" class="form-signin">
+        {% csrf_token %}
 
-        <p>
-            <label for="id_password">Password: </label>
-            <input type="password" name="password" id="id_password">
-        </p>
+        <label for="id_username" class="sr-only">Username: </label>
+        <input type="text" class="form-control" name="username" id="id_username" placeholder="Email address"
+               required autofocus>
+        <p></p>
 
-        <input type="submit" name="submit1" value="Submit"/>
+        <label for="id_password" class="sr-only">Password: </label>
+        <input type="password" name="password" id="id_password" class="form-control" placeholder="Password"
+               required>
+
+        <p></p>
+        <input type="submit" name="submit1" class="btn btn-lg btn-primary btn-block" value="Submit"/>
     </form>
-
 {% endblock %}

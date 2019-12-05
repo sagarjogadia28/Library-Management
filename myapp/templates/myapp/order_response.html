@@ -1,18 +1,22 @@
 {% extends 'myapp/base.html' %}
 
+{% block title %}Placed order{% endblock %}
+
 {% block myhdg %}Hello {{ name }}{% endblock %}
 
 {% block body_block %}
-    {% if books %}
-        <h2>List of Books </h2>
-        <ol>
-            {% for book in books %}
-                <li>{{ book.title }}</li>
-            {% endfor %}
-        </ol>
+    <div class="body-content">
+        {% if books %}
+            <h2 class="display-5">List of ordered Books: </h2>
+            <hr>
+            <ol class="list-group">
+                {% for book in books %}
+                    <li class="list-group-item">{{ book.title }}</li>
+                {% endfor %}
+            </ol>
 
-    {% else %}
-        <strong>There are no available books!</strong>
-    {% endif %}
-
+        {% else %}
+            <strong>There are no available books!</strong>
+        {% endif %}
+    </div>
 {% endblock %}

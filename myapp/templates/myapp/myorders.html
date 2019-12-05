@@ -1,22 +1,41 @@
 {% extends 'myapp/base.html' %}
 
-{% block myhdg %}Hello {{ name }}{% endblock %}
+{% block title %}Orders{% endblock %}
+
+{% block myhdg %}Hello {{ request.user.username }} {% endblock %}
 
 {% block body_block %}
-    {% if orders %}
-        <h2>List of Orders</h2>
-        <ol>
-            {% for order in orders %}
-                <li>{{ order.order_type }} {{ order.order_date }}</li>
-            {% endfor %}
+    <div class="register-form" style="margin-top: 100px;">
+        {% if orders %}
 
-            {% for book in book_list %}
-                <li>{{ book }}</li>
-            {% endfor %}
-        </ol>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Books</th>
+                    <th scope="col">Order Type</th>
+                    <th scope="col">Order Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order, book in new_list %}
+                    <tr>
+                        <td>{{ book }}</td>
 
-    {% else %}
-        <strong>There are no available orders!</strong>
-    {% endif %}
+                        <td>
+                            {% if order.order_type == 0 %}
+                                Purchase
+                            {% else %}
+                                Borrow
+                            {% endif %}
+                        </td>
+                        <td>{{ order.order_date }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <strong>There are no available orders!</strong>
+        {% endif %}
+    </div>
 
 {% endblock %}

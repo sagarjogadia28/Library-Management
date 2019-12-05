@@ -1,0 +1,76 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+a, p {
+    font-family: 'Montserrat-700', sans-serif;
+}
+
+.login {
+    border-color: #28A745;
+    color: #28A745;
+}
+
+.login:hover {
+    background-color: #28A745;
+}
+
+body {
+    background-color: azure;
+}
+
+.login-status {
+    font-size: small;
+}
+
+li {
+    margin: 0 15px;
+}
+
+.header {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.body-content {
+    text-align: left;
+    margin-left: 10px;
+}
+
+.user-greeting {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4rem;
+}
+
+.list-group {
+    display: inline-block;
+}
+
+.list-group-item {
+    padding: 5px 30px;
+}
+
+.display-4 {
+    font-family: 'Montserrat-700', sans-serif;
+    font-size: 2rem;
+}
+
+.form-signin {
+    width: 300px;
+    margin: 4rem auto;
+}
+
+.register-form {
+    text-align: left;
+    margin: 10px 200px;
+}
+
+.register-submit {
+    width: 100%;
+}
+
+.card-text {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat-700', sans-serif;
+}

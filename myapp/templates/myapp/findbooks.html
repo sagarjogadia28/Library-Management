@@ -1,15 +1,16 @@
 {% extends 'myapp/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Find books{% endblock %}
 
 {% block myhdg %}Hello {{ request.user.username }} {% endblock %}
 
 {% block body_block %}
-    <form action="{% url 'myapp:findbooks' %}" method="post">
-        {#        CSRF token missing or incorrect.#}
-        {#        The csrf_token template tag provides an easy-to-use protection against Cross Site Request Forgeries#}
-        {% csrf_token %}
-        {#        Return this form rendered as HTML <p>s#}
-        {{ form.as_p }}
-        <input type="submit" name="submit1" value="Find Books"/>
-    </form>
-
+    <div class="register-form">
+        <form action="{% url 'myapp:findbooks' %}" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" name="submit1" class="btn btn-success register-submit" value="Find Books"/>
+        </form>
+    </div>
 {% endblock %}

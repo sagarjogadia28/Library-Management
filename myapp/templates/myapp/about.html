@@ -1,11 +1,12 @@
 {% extends 'myapp/base.html' %}
 
-{% block title %}eBook APP About page{% endblock %}
+{% block title %}About{% endblock %}
 
 {% block myhdg %}Hello {{ request.user.username }} {% endblock %}
 
 {% block body_block %}
-    <h2>Lucky number: {{ mynum }}</h2>
-    <p><a href="/myapp/">Go to index page</a></p>
-    <p><a href="{% url 'myapp:index' %}">Go to index page</a></p>
+    <h2 style="margin-top: 100px; color: #663399;">This is an eBook APP</h2>
+    <h4>Lucky number: {{ mynum }}</h4>
+    {#    <p><a href="/myapp/">Go to index page</a></p>#}
+    {#    <p><a href="{% url 'myapp:index' %}">Go to index page</a></p>#}
 {% endblock %}

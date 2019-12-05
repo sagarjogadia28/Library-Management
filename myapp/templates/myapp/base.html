@@ -3,32 +3,76 @@
 
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'myapp/style.css' %}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script:700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'myapp/my_styles.css' %}">
+
     <title>eBook APP - {% block title %}Welcome!{% endblock %}</title>
 </head>
 
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rebeccapurple;">
+    <a class="navbar-brand" href="{% url 'myapp:index' %}">eLibrary</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto navbar">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'myapp:index' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'myapp:about' %}">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'myapp:findbooks' %}">Find books</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-danger btn-outline-info my-2 my-sm-0 logout"
+                       href="{% url 'myapp:logout' %}">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-success btn-outline-info my-2 my-sm-0 login"
+                       href="{% url 'myapp:login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-success btn-outline-info my-2 my-sm-0"
+                       href="{% url 'myapp:register' %}">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+
+    </div>
+</nav>
+
 <div>
-    {% if user.is_authenticated %}
-        <h1>{% block myhdg %}Hello {{ user.first_name }} {% endblock %}</h1>
-    {% else %}
-        <h1>{% block myhdg1 %}Hello User {% endblock %}</h1>
-    {% endif %}
-    {% block body_block %}*** {% endblock %}
-</div>
-<hr/>
-<div>
-    <ul>
-        <li class="hbar1"><a href="/myapp/about/">Find out about this site</a></li>
-        <li class="hbar1"><a href="{% url 'myapp:index' %}">Click here to return to main page</a><br/></li>
-        <li class="hbar1"><a href="{% url 'myapp:findbooks' %}">Find books</a><br/></li>
+    <div class="header">
         {% if user.is_authenticated %}
-            <li class="hbar1"><a href="{% url 'myapp:logout' %}">Logout</a></li>
+            <h3 class="user-greeting">{% block myhdg %}Hello {{ user.first_name }} {% endblock %}</h3>
         {% else %}
-            <li class="hbar1"><a href="{% url 'myapp:login' %}">Login</a></li>
-            <li class="hbar1"><a href="{% url 'myapp:register' %}">Register</a></li>
+            <h3 class="user-greeting">{% block myhdg1 %}Hello User {% endblock %}</h3>
         {% endif %}
-    </ul>
+        {% block body_block %}*** {% endblock %}
+    </div>
+
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
 </body>
 </html>

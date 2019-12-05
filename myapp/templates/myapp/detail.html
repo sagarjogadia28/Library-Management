@@ -1,13 +1,17 @@
 {% extends 'myapp/base.html' %}
 
-{% block title %}eBook APP Detail page{% endblock %}
+{% block title %}Detail{% endblock %}
 
 {% block myhdg %}Hello {{ request.user.username }} {% endblock %}
 
 {% block body_block %}
-    <h2>{{ book.title }}</h2>
-    <p>Price: {{ book.price }}</p>
-    <p>Publisher: {{ book.publisher }}</p>
-{#    <p><a href="{% url 'myapp:index' %}">Go to index page</a></p>#}
-{#    <p><a href="{% url 'myapp:about' %}">Go to about page</a></p>#}
+
+    <div class="card border-info mb-3" style="max-width: 30rem; margin: 100px auto">
+        <div class="card-header">About</div>
+        <div class="card-body text-info">
+            <h3 class="card-title">{{ book.title.upper }}</h3>
+            <p class="card-text">${{ book.price }}</p>
+            <p class="card-text">{{ book.publisher }}</p>
+        </div>
+    </div>
 {% endblock %}

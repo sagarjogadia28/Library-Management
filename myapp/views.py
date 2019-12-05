@@ -99,24 +99,27 @@ def place_order(request):
 
 def review(request):
     if request.user.is_authenticated:
-        member = get_object_or_404(Member, pk=request.user.pk)
-        if member.status == 1 or member.status == 2:
-            if request.method == 'POST':
-                form = ReviewForm(request.POST)
-                if form.is_valid():
-                    review = form.save()
-                    book = review.book
-                    book.num_reviews += 1
-                    book.save()
-                    review.save()
-                    return HttpResponseRedirect('/myapp')
+        try:
+            member = Member.objects.get(pk=request.user.pk)
+            if member.status == 1 or member.status == 2:
+                if request.method == 'POST':
+                    form = ReviewForm(request.POST)
+                    if form.is_valid():
+                        review = form.save()
+                        book = review.book
+                        book.num_reviews += 1
+                        book.save()
+                        review.save()
+                        return HttpResponseRedirect('/myapp')
+                else:
+                    form = ReviewForm()
+                return render(request, 'myapp/review.html', {'form': form})
             else:
-                form = ReviewForm()
-            return render(request, 'myapp/review.html', {'form': form})
-        else:
-            return HttpResponse('You are not eligible to view this page')
+                return render(request, 'myapp/invalid.html', {'message': 'You are not eligible to view this page'})
+        except Member.DoesNotExist:
+            return render(request, 'myapp/invalid.html', {'message': 'You are not eligible to view this page'})
     else:
-        return HttpResponse('You are not eligible to view this page')
+        return render(request, 'myapp/invalid.html', {'message': 'You are not eligible to view this page'})
 
 
 def user_login(request):
@@ -131,9 +134,9 @@ def user_login(request):
                 request.session.set_expiry(3600)
                 return HttpResponseRedirect(reverse('myapp:index'))
             else:
-                return HttpResponse('Your account is disabled.')
+                return render(request, 'myapp/invalid.html', {'message': 'Your account is disabled.'})
         else:
-            return HttpResponse('Invalid login details.')
+            return render(request, 'myapp/invalid.html', {'message': 'Invalid login details.'})
     else:
         return render(request, 'myapp/login.html')
 
@@ -168,7 +171,11 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/myapp')
+            # user = authenticate(username=request.POST['username'], password=request.POST['password1'])
+            # login(request, user)
+            # request.session['last_login'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            # request.session.set_expiry(3600)
+            return HttpResponseRedirect(reverse('myapp:login'))
     else:
         form = RegisterForm()
     return render(request, 'myapp/register.html', {'form': form})
@@ -188,7 +195,9 @@ def my_orders(request):
                     book_title = book_title + book.title + ', '
                 book_list.append(book_title[:-2])
 
-            return render(request, 'myapp/myorders.html', {'orders': orders, 'book_list': book_list})
+            new_list = zip(orders, book_list)
+            return render(request, 'myapp/myorders.html',
+                          {'orders': orders, 'book_list': book_list, 'new_list': new_list})
         except Member.DoesNotExist:
-            return HttpResponse('There are no available orders!')
-    return HttpResponse('You are not a registered member!')
+            return render(request, 'myapp/invalid.html', {'message': 'There are no available orders!'})
+    return render(request, 'myapp/invalid.html', {'message': 'You are not a registered member!'})
