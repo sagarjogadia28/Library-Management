@@ -44,5 +44,4 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = Member
         fields = ['username', 'password1', 'password2', 'first_name', 'last_name', 'status', 'address', 'city',
-                  'province',
-                  'auto_renew']
+                  'province', 'image', 'auto_renew']
