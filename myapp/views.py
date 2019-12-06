@@ -77,15 +77,18 @@ def findbooks(request):
         return render(request, 'myapp/findbooks.html', {'form': form})
 
 
+@login_required(login_url='/myapp/login/')
 def place_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
             books = form.cleaned_data['books']
-            order = form.save()
-            member = order.member
-            type = order.order_type
+            order = form.save(commit=False)
+            member = get_object_or_404(Member, id=request.user.id)
+            order.member = member
             order.save()
+            order.books.set(books)
+            type = order.order_type
             if type == 1:
                 for b in order.books.all():
                     member.borrowed_books.add(b)
