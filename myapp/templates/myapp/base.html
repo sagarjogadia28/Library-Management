@@ -53,6 +53,10 @@
 
 <div>
     <div class="header">
+        {% if  request.user.member.image.url %}
+            <img src="{{ request.user.member.image.url }}" style="border-radius: 50%;    width: 100px; height: 100px;">
+        {% endif %}
+
         {% if user.is_authenticated %}
             <h3 class="user-greeting">{% block myhdg %}Hello {{ user.first_name }} {% endblock %}</h3>
         {% else %}

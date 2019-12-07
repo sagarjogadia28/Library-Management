@@ -11,7 +11,7 @@
 
     <div class="body-content">
         {% if booklist %}
-            <h2 class="display-4">Books:</h2>
+            {#            <h2 class="display-4">Books:</h2>#}
             <ol class="list-group">
                 {% for book in booklist %}
                     <li class="list-group-item"><a href="{% url 'myapp:detail' book.id %}">{{ book.title }} </a></li>
@@ -26,6 +26,6 @@
         <a class="btn btn-info" href="{% url 'myapp:place_order' %}">Place order</a>
         <a class="btn btn-warning" href="{% url 'myapp:review' %}">Review book</a>
         <a class="btn btn-secondary" href="{% url 'myapp:orders' %}">Orders</a>
-        <img src="{{ request.user.image.url }}" alt="Image of the user">
+        {#        <img src="{{ request.user.member.image.url }}" alt="Image of the user">#}
     </div>
 {% endblock %}
