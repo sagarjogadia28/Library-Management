@@ -1,14 +1,16 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
-from .models import Publisher, Book, Member, Order, Review
-from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm
-from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.urls import reverse
-from django.views import View
 import random
 from datetime import datetime
+
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+from django.urls import reverse
+from django.views import View
+
+from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm
+from .models import Book, Member, Order, Review
 
 
 # Create your views here.
@@ -124,6 +126,8 @@ def review(request):
 
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('myapp:index'))
     if request.method == 'POST':
         valuenext = request.POST.get('next')
         username = request.POST['username']
@@ -171,13 +175,9 @@ def chk_reviews(request, book_id):
 
 def register(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = RegisterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            # user = authenticate(username=request.POST['username'], password=request.POST['password1'])
-            # login(request, user)
-            # request.session['last_login'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            # request.session.set_expiry(3600)
             return HttpResponseRedirect(reverse('myapp:login'))
     else:
         form = RegisterForm()

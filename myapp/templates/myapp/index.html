@@ -1,7 +1,5 @@
 {% extends 'myapp/base.html' %}
 
-{% block myhdg %}Hello {{ request.user.username }} {% endblock %}
-
 {% block body_block %}
     {% if last_login %}
         <p class="login-status">( Last login was {{ last_login }} )</p>

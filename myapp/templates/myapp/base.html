@@ -53,8 +53,9 @@
 
 <div>
     <div class="header">
-        {% if  request.user.member.image.url %}
-            <img src="{{ request.user.member.image.url }}" style="border-radius: 50%;    width: 100px; height: 100px;">
+        {% if  request.user.member.profile_image %}
+            <img src="{{ request.user.member.profile_image.url }}"
+                 style="border-radius: 50%;    width: 100px; height: 100px;">
         {% endif %}
 
         {% if user.is_authenticated %}

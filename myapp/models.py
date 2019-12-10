@@ -1,8 +1,7 @@
-from django.db import models
-import datetime
 from django.contrib.auth.models import User
-from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -51,7 +50,7 @@ class Member(User):
     last_renewal = models.DateField(default=timezone.now)
     auto_renew = models.BooleanField(default=True)
     borrowed_books = models.ManyToManyField(Book, blank=True)
-    image = models.ImageField(blank=True, upload_to='profile_image/')
+    profile_image = models.ImageField(upload_to='profile_image/', blank=True)
 
     def __str__(self):
         return self.username
@@ -60,7 +59,7 @@ class Member(User):
         title = ""
         for book in self.borrowed_books.all():
             title = title + book.title + ", "
-        return title[:-1]
+        return title[:-2]
 
 
 class Order(models.Model):

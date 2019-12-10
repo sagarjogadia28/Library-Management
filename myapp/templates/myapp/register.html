@@ -7,7 +7,7 @@
 
 {% block body_block %}
     <div class="register-form">
-        <form action="{% url 'myapp:register' %}" method="post" class="form-group">
+        <form action="{% url 'myapp:register' %}" method="post" enctype="multipart/form-data" class="form-group">
             {% csrf_token %}
 
             {{ form.username|as_crispy_field }}
@@ -43,7 +43,7 @@
                     {{ form.province|as_crispy_field }}
                 </div>
             </div>
-            {{ form.image|as_crispy_field }}
+            {{ form.profile_image|as_crispy_field }}
             {{ form.auto_renew|as_crispy_field }}
 
             <input type="submit" name="submit1" class="btn btn-success register-submit" value="Submit"/>

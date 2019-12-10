@@ -1,6 +1,7 @@
 from django import forms
-from myapp.models import Order, Review, Member
 from django.contrib.auth.forms import UserCreationForm
+
+from myapp.models import Order, Review, Member
 
 
 class SearchForm(forms.Form):
@@ -14,7 +15,7 @@ class SearchForm(forms.Form):
     name = forms.CharField(max_length=100, required=False, label="Your Name")
     category = forms.ChoiceField(widget=forms.RadioSelect, choices=CATEGORY_CHOICES, required=False,
                                  label="Select a category:")
-    max_price = forms.IntegerField(label="Maximum Price", required=True, min_value=0)
+    max_price = forms.DecimalField(label="Maximum Price", required=True, min_value=0)
 
 
 class OrderForm(forms.ModelForm):
@@ -42,5 +43,5 @@ class ReviewForm(forms.ModelForm):
 class RegisterForm(UserCreationForm):
     class Meta:
         model = Member
-        fields = ['username', 'password1', 'password2', 'first_name', 'last_name', 'status', 'address', 'city',
-                  'province', 'image', 'auto_renew']
+        fields = ['username', 'password1', 'password2', 'profile_image', 'first_name', 'last_name', 'status', 'address',
+                  'city', 'province', 'auto_renew']

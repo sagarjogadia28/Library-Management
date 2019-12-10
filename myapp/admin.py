@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Publisher, Book, Member, Order, Review
 
 
@@ -25,7 +26,7 @@ class PublisherAdmin(admin.ModelAdmin):
 
 
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'status', 'books_title')
+    list_display = ('username', 'first_name', 'last_name', 'status', 'books_title')
 
 
 # Register your models here.
